@@ -1,0 +1,51 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">MSS Blog</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <% if (locals.user) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/blogs/create">Create Blog</a>
+        </li>
+        <!-- <#% console.log(user) %> -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDarkDropdownMenuLink"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <%= user.fullName %>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/blogs/blog">My Blogs</a></li>
+            <li><a class="dropdown-item" href="/users/logout">Logout</a></li>
+          </ul>
+        </li>
+        <% } else { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/login">login</a>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+<% if (locals.message) { %>
+<div class="container alert alert-success my-4"><%= message %></div>
+<% } %> <% if (locals.error) { %>
+<div class="container alert alert-danger my-4"><%= error %></div>
+<% } %>

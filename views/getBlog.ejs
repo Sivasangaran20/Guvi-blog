@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/css/bootstrap.ejs') %>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+  </head>
+  <body>
+    <%- include('./partials/components/nav.ejs') %>
+    <div class="container">
+      <!-- <#% console.log(locals.user) %>  -->
+      <% if (locals.user && locals.user.role === 'Admin') { %>
+      <button type="submit" class="btn btn-danger my-2" onclick="DeleteBlog()">
+        Delete Blog
+      </button>
+      <% } %>
+    </div>
+    <div class="container my-5">
+      <img
+        src="/uploads/<%=blog.coverImage %>"
+        alt="..."
+        class="rounded mx-auto d-block"
+        width="75%"
+      />
+      <h1 class="my-5 text-center"><%= blog.title %></h1>
+      <p class="my-2"><%= blog.content %></p>
+      <p class="my-2">Posted By: <b><%= blog.createdBy.fullName %></b></p>
+    </div>
+    <% if (locals.user) { %>
+    <div class="container my-5">
+      <label for="comment" class="form-label">Comments</label>
+      <input
+        id="comment-input"
+        class="form-control"
+        type="text"
+        placeholder="Enter Comments"
+      />
+      <button
+        type="submit"
+        class="btn btn-success my-2"
+        onclick="postComment()"
+      >
+        Post
+      </button>
+    </div>
+    <% } %>
+    <div class="container">
+      <h3>Comments (<%= comments.length %>)</h3>
+      <% comments.forEach(element => { %>
+      <span class="text-bold"
+        ><%= element.createdBy.fullName %> - <%= element.comment %></span
+      >
+      <% }) %>
+    </div>
+    <%- include('./partials/js/bootstrap.ejs') %>
+    <script>
+      const blogId = "<%= blog._id %>";
+      const comment = document.getElementById("comment-input");
+      function postComment() {
+        fetch("/comments", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ blog: blogId, comment: comment.value }),
+        }).then((e) => window.location.reload());
+      }
+
+      function DeleteBlog() {
+        fetch(`/blogs/${blogId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((e) => window.location.reload());
+      }
+    </script>
+  </body>
+</html>

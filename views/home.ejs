@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/css/bootstrap.ejs') %>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <style>
+      .blogs-container {
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        gap: 20px;
+        grid-auto-flow: row;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('./partials/components/nav.ejs') %>
+    <div class="container">
+      <div class="blogs-container mt-5">
+        <% blogs.forEach(element => { %>
+        <div class="card mx-2" style="width: 100%">
+          <img
+            src="/uploads/<%=element.coverImage %>"
+            class="card-img-top"
+            alt="..."
+          />
+          <div class="card-body">
+            <h5 class="card-title"><%= element.title.slice(0,30) %>...</h5>
+            <!-- <#% console.log(element.views) %> -->
+            <p><%= element.views %> views</p>
+            <p class="card-text"><%= element.content.slice(0,100) %>...</p>
+            <a href="/blogs/<%= element.id %>" class="btn btn-primary"
+              >Read More</a
+            >
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+    <%- include('./partials/js/bootstrap.ejs') %>
+  </body>
+</html>
